@@ -13,6 +13,20 @@ if (isset($_GET['id'])) {
     }
 }
 
+if (isset($_POST['update'])) {
+    $id = $_GET['id'];
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+
+    $query = "UPDATE task SET title = '$title', description = '$description' WHERE id = $id";
+    mysqli_query($conn, $query);
+
+    $_SESSION['message'] = 'Tarefa atualizada com sucesso!';
+    $_SESSION['message_type'] = 'warning';
+
+    header('Location: index.php');
+}
+
 ?>
 
 <?php include_once"includes/header.php"; ?>
@@ -21,13 +35,14 @@ if (isset($_GET['id'])) {
     <div class="row">
         <div class="col-md-4 mx-auto">
             <div class="card card-body">
-                <form action="">
+                <form action="edit.php?id=<?php echo $_GET['id']; ?>" method="POST">
                     <div class="form-group">
                         <input type="text" name="title" value="<?php echo $title; ?>" class="form-control" placeholder="Atualizar Título">
                     </div>
                     <div class="form-group">
-                        <textarea name="description" rows="2"><?php echo $description; ?></textarea>
+                        <textarea name="description" rows="2" class="form-control"><?php echo $description; ?></textarea>
                     </div>
+                    <button class="btn btn-success btn-block" name="update">Atualizar</button>
                 </form>
             </div>
         </div>
